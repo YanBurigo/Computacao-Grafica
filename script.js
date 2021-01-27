@@ -133,8 +133,8 @@ var intervalo = setInterval(() => {
         y += 3 * Math.sin(ang / Math.PI);
     }
     if (movement == 40) {
-        x -= Math.cos(ang / Math.PI);
-        y -= Math.sin(ang / Math.PI);
+        x -= 2 * Math.cos(ang / Math.PI);
+        y -= 2 * Math.sin(ang / Math.PI);
     }
 }, 10);
 
