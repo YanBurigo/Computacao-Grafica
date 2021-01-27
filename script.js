@@ -11,7 +11,6 @@ var ang = 0;
 const audio = document.querySelector('audio');
 
 audio.volume = 0.75;
-var playPromise = audio.play();
 
 function desenhar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -112,6 +111,7 @@ var turnLeft = 0;
 var turnRight = 0;
 
 document.onkeydown = function (evt) {
+    audio.play();
     switch (evt.keyCode) {
         case 39: //direita
             turnRight = 39;
