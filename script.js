@@ -11,7 +11,7 @@ var ang = 0;
 const audio = document.querySelector('audio');
 
 audio.volume = 0.75;
-audio.play();
+var playPromise = audio.play();
 
 function desenhar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
