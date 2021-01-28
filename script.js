@@ -7,6 +7,7 @@ var x = 200,
     larg = 10,
     alt = 10;
 var ang = 0;
+var drift = 0;
 
 const audio = document.querySelector('audio');
 
@@ -57,10 +58,6 @@ function desenhar() {
     ctx.fill();
 
     ctx.fillStyle = "rgb(255, 255, 255)";
-    //ctx.fillRect(140, 400, 80, 20);
-    //ctx.fillRect(240, 400, 80, 20);
-    //ctx.fillRect(340, 400, 80, 20);
-    //ctx.fillRect(440, 400, 80, 20);
 
     ctx.beginPath();
     
@@ -79,13 +76,6 @@ function desenhar() {
     ctx.quadraticCurveTo(70,400,70,310);
     ctx.moveTo(70,310);
     ctx.quadraticCurveTo(70,240,120,220);
-    /*
-    moveto(xinicial, yinicial)
-    quadratoccurveto(xinc,yinc,xfinal,yfinal)
-    */
-    //ctx.quadraticCurveTo(60,120,65,100);
-    //ctx.quadraticCurveTo(125,100,125,62.5);
-    //ctx.quadraticCurveTo(125,25,75,25);
     ctx.stroke();
 
 
@@ -96,9 +86,9 @@ function desenhar() {
     ctx.lineWidth = 2;
     ctx.save(); //Faz um backup do CTX
     ctx.translate(x, y);
-    ctx.rotate(ang / Math.PI);
+    ctx.rotate(drift + (ang / Math.PI));
     ctx.beginPath();
-
+    
     //Parte de cima
     ctx.moveTo(0, 0);
     ctx.lineTo(50, 0);
@@ -127,10 +117,12 @@ function desenhar() {
     ctx.lineTo(25, 20);
 
     ctx.stroke();
+
     ctx.fillRect(-larg / 2, -alt / 2, larg, alt);
     ctx.fillRect(larg * 4.5, alt - 15, larg, alt);
     ctx.fillRect(larg * 4.5, alt + 30, larg, alt);
     ctx.fillRect(-larg / 2, alt + 30, larg, alt);
+    
     ctx.restore(); //Restaura o backup do CTX
     requestAnimationFrame(desenhar);
 }
@@ -140,6 +132,7 @@ requestAnimationFrame(desenhar);
 var movement = 0;
 var turnLeft = 0;
 var turnRight = 0;
+var movementDrift = 0
 
 document.onkeydown = function (evt) {
     audio.play();
@@ -156,9 +149,15 @@ document.onkeydown = function (evt) {
         case 40: //baixo
             movement = 40;
             break;
+        case 32: //espaço
+            movementDrift = 32;
+            break;
     }
 };
 var intervalo = setInterval(() => {
+    if (Math.abs(ang) == 19.83999999999993){
+       // ang = 0;      
+    }
     if (movement == 38) {
         x += 3 * Math.cos(ang / Math.PI);
         y += 3 * Math.sin(ang / Math.PI);
@@ -166,6 +165,14 @@ var intervalo = setInterval(() => {
     if (movement == 40) {
         x -= 2 * Math.cos(ang / Math.PI);
         y -= 2 * Math.sin(ang / Math.PI);
+    }
+    if (movementDrift == 0 && drift > 0) {
+        drift -= 0.02 
+        console.log("diminui")
+    }
+    if (movementDrift == 32 && drift < 1.0) {
+        drift += 0.02
+        console.log("aumentou")
     }
 }, 10);
 
@@ -186,5 +193,8 @@ document.onkeyup = function (evt) {
     }
     if (evt.keyCode == 39) {
         turnRight = 0;
+    }
+    if (evt.keyCode == 32) {
+        movementDrift = 0;
     }
 };
