@@ -56,6 +56,37 @@ function desenhar() {
     ctx.arc(211, 110, 70, 0, 2 * Math.PI);
     ctx.fill();
 
+    ctx.fillStyle = "rgb(255, 255, 255)";
+    //ctx.fillRect(140, 400, 80, 20);
+    //ctx.fillRect(240, 400, 80, 20);
+    //ctx.fillRect(340, 400, 80, 20);
+    //ctx.fillRect(440, 400, 80, 20);
+
+    ctx.beginPath();
+    
+    ctx.moveTo(120,220);
+    ctx.strokeStyle = "rgb(255, 255, 255)";
+    ctx.quadraticCurveTo(250,220,250,220);
+    ctx.moveTo(250,220);
+    ctx.quadraticCurveTo(320,200,320,120);
+    ctx.moveTo(320,120);
+    ctx.quadraticCurveTo(310,40,500,60);
+    ctx.moveTo(500,60);
+    ctx.quadraticCurveTo(610,60,570,370);
+    ctx.moveTo(570,370);
+    ctx.quadraticCurveTo(560,440,120,400);
+    ctx.moveTo(120,400);
+    ctx.quadraticCurveTo(70,400,70,310);
+    ctx.moveTo(70,310);
+    ctx.quadraticCurveTo(70,240,120,220);
+    /*
+    moveto(xinicial, yinicial)
+    quadratoccurveto(xinc,yinc,xfinal,yfinal)
+    */
+    //ctx.quadraticCurveTo(60,120,65,100);
+    //ctx.quadraticCurveTo(125,100,125,62.5);
+    //ctx.quadraticCurveTo(125,25,75,25);
+    ctx.stroke();
 
 
     //carro
