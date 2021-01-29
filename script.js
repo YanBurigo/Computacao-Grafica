@@ -10,6 +10,7 @@ var ang = 0;
 var drift = 0;
 
 const audio = document.querySelector('audio');
+const audio2 = document.querySelector('#drift');
 
 audio.volume = 0.75;
 
@@ -151,6 +152,7 @@ document.onkeydown = function (evt) {
             break;
         case 32: //espaço
             movementDrift = 32;
+            audio2.play();
             break;
     }
 };
@@ -168,11 +170,9 @@ var intervalo = setInterval(() => {
     }
     if (movementDrift == 0 && drift > 0) {
         drift -= 0.02 
-        console.log("diminui")
     }
     if (movementDrift == 32 && drift < 1.0) {
         drift += 0.02
-        console.log("aumentou")
     }
 }, 10);
 
