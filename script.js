@@ -2,19 +2,20 @@
 var canvas = document.getElementById("tela");
 var ctx = canvas.getContext("2d");
 
-var x = 200,
-    y = 100,
-    larg = 10,
-    alt = 10;
+var x = 200, y = 100, larg = 10, alt = 10;
 var ang = 0;
 var drift = 0;
 var luz = 0;
 var blue = "255";
+var horn = 0;
 
 const audio = document.querySelector('audio');
 const audio2 = document.querySelector('#drift');
+const audio3 = document.querySelector('#horn');
 
-audio.volume = 0.75;
+audio.volume = 0.25;
+audio2.volume = 0.25;
+audio3.volume = 0.25;
 
 function desenhar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -81,6 +82,19 @@ function desenhar() {
     ctx.quadraticCurveTo(70, 240, 120, 220);
     ctx.stroke();
 
+    ctx.fillStyle = "rgb(60, 60, 60)";
+    ctx.fillRect(0, 0, 250, 150);
+    ctx.fillStyle = "rgb(255, 211, 0)";
+    ctx.fillRect(250, 0, 10, 150);
+    ctx.fillRect(0, 140, 250, 10);
+    ctx.fillRect(160, 50, 10, 100);
+    ctx.fillRect(70, 50, 10, 100);
+
+    ctx.fillStyle = "rgb(0, 162, 232)";
+    ctx.beginPath();
+    ctx.ellipse(430, 300, 50, 75, Math.PI/2, 0, 2 * Math.PI);
+    ctx.ellipse(450, 240, 45, 80, Math.PI, 0, 2 * Math.PI);
+    ctx.fill();
 
     //carro
 
@@ -92,21 +106,9 @@ function desenhar() {
     ctx.rotate(drift + (ang / Math.PI));
     ctx.beginPath();
 
-    //Parte de cima
-
-
-
-
-    //Parte de baixo
-
-
-
     ctx.stroke();
 
-
-
-
-
+    //rodas
     ctx.fillStyle = "rgb(0, 0, 0)";
     ctx.fillRect(-larg / 2, -alt / 2, larg + 5, alt);
     ctx.fillRect(larg * 4.5, alt - 15, larg + 5, alt);
@@ -115,6 +117,7 @@ function desenhar() {
 
 
     //corpo do carro
+
     ctx.fillStyle = "rgb(0, 120, 255)";
     ctx.fillRect(-10, 0, 80, 44);
 
@@ -136,6 +139,7 @@ function desenhar() {
     ctx.fillRect(60, 30, 6, 7);
 
     //Aerofólio
+
     ctx.fillStyle = "rgb(0, 0, 0)";
     ctx.fillRect(-23, 8, 30, 7);
 
@@ -183,16 +187,22 @@ document.onkeydown = function (evt) {
                 blue = "0";
             } else {
                 luz = 0;
-                blue = "255";
+                blue = "255"; 
             }
+            break;
+        case 69:
+            horn = 69;
             break;
     }
 };
 
 
 var intervalo = setInterval(() => {
-    if (Math.abs(ang) == 19.83999999999993) {
-        // ang = 0;      
+    if(horn == 69){
+        audio3.play();
+    }
+    if (Math.abs(ang) == 19.83999999999993){
+        ang = 0;      
     }
     if (movement == 38) {
         x += 3 * Math.cos(ang / Math.PI);
@@ -202,12 +212,34 @@ var intervalo = setInterval(() => {
         x -= 2 * Math.cos(ang / Math.PI);
         y -= 2 * Math.sin(ang / Math.PI);
     }
-    if (movementDrift == 0 && drift > 0) {
-        drift -= 0.02
+
+    if (turnRight == 39){
+        if (movementDrift == 0 && drift > 0) {
+            drift -= 0.02 
+        }
+        if (movementDrift == 32 && drift < 1.0) {
+            drift += 0.02
+        }
     }
-    if (movementDrift == 32 && drift < 1.0) {
-        drift += 0.02
+    if (turnLeft == 37){
+        if (movementDrift == 0 && drift < 0) {
+            drift += 0.02 
+        }
+        if (movementDrift == 32 && drift > -1.0) {
+            drift -= 0.02
+        }
     }
+    if (turnLeft == 0 && drift != 0){
+        if (movementDrift == 0 && drift < 0) {
+            drift += 0.02 
+        }
+    }
+    if (turnRight == 0 && drift != 0){
+        if (movementDrift == 0 && drift > 0) {
+            drift -= 0.02 
+        }
+    }
+    
 }, 10);
 
 var intervalo2 = setInterval(() => {
@@ -230,5 +262,8 @@ document.onkeyup = function (evt) {
     }
     if (evt.keyCode == 32) {
         movementDrift = 0;
+    }
+    if (evt.keyCode == 69){
+        horn = 0;
     }
 };
