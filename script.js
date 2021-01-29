@@ -8,6 +8,8 @@ var x = 200,
     alt = 10;
 var ang = 0;
 var drift = 0;
+var luz = 0;
+var blue = "255";
 
 const audio = document.querySelector('audio');
 const audio2 = document.querySelector('#drift');
@@ -19,7 +21,7 @@ function desenhar() {
     //mapa
     ctx.fillStyle = "rgb(0, 128, 0)";
     ctx.fillRect(0, 0, 640, 480);
-    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillStyle = "rgb(60, 60, 60)";
     ctx.beginPath();
     ctx.arc(100, 380, 70, 0, 2 * Math.PI);
     ctx.fill();
@@ -61,22 +63,22 @@ function desenhar() {
     ctx.fillStyle = "rgb(255, 255, 255)";
 
     ctx.beginPath();
-    
-    ctx.moveTo(120,220);
+
+    ctx.moveTo(120, 220);
     ctx.strokeStyle = "rgb(255, 255, 255)";
-    ctx.quadraticCurveTo(250,220,250,220);
-    ctx.moveTo(250,220);
-    ctx.quadraticCurveTo(320,200,320,120);
-    ctx.moveTo(320,120);
-    ctx.quadraticCurveTo(310,40,500,60);
-    ctx.moveTo(500,60);
-    ctx.quadraticCurveTo(610,60,570,370);
-    ctx.moveTo(570,370);
-    ctx.quadraticCurveTo(560,440,120,400);
-    ctx.moveTo(120,400);
-    ctx.quadraticCurveTo(70,400,70,310);
-    ctx.moveTo(70,310);
-    ctx.quadraticCurveTo(70,240,120,220);
+    ctx.quadraticCurveTo(250, 220, 250, 220);
+    ctx.moveTo(250, 220);
+    ctx.quadraticCurveTo(320, 200, 320, 120);
+    ctx.moveTo(320, 120);
+    ctx.quadraticCurveTo(310, 40, 500, 60);
+    ctx.moveTo(500, 60);
+    ctx.quadraticCurveTo(610, 60, 570, 370);
+    ctx.moveTo(570, 370);
+    ctx.quadraticCurveTo(560, 440, 120, 400);
+    ctx.moveTo(120, 400);
+    ctx.quadraticCurveTo(70, 400, 70, 310);
+    ctx.moveTo(70, 310);
+    ctx.quadraticCurveTo(70, 240, 120, 220);
     ctx.stroke();
 
 
@@ -86,44 +88,63 @@ function desenhar() {
     ctx.strokeStyle = "rgb(0, 255, 100)";
     ctx.lineWidth = 2;
     ctx.save(); //Faz um backup do CTX
-    ctx.translate(x, y);
+    ctx.translate(x - 40, y + 100);
     ctx.rotate(drift + (ang / Math.PI));
     ctx.beginPath();
-    
+
     //Parte de cima
-    ctx.moveTo(0, 0);
-    ctx.lineTo(50, 0);
 
-    ctx.moveTo(50, 0);
-    ctx.lineTo(25, 20);
 
-    ctx.moveTo(25, 0);
-    ctx.lineTo(25, 20);
 
-    ctx.moveTo(0, 0);
-    ctx.lineTo(25, 20);
 
     //Parte de baixo
 
-    ctx.moveTo(50, 45);
-    ctx.lineTo(0, 45);
 
-    ctx.moveTo(25, 0);
-    ctx.lineTo(25, 45);
-
-    ctx.moveTo(0, 50);
-    ctx.lineTo(25, 20);
-
-    ctx.moveTo(50, 50);
-    ctx.lineTo(25, 20);
 
     ctx.stroke();
 
-    ctx.fillRect(-larg / 2, -alt / 2, larg, alt);
-    ctx.fillRect(larg * 4.5, alt - 15, larg, alt);
-    ctx.fillRect(larg * 4.5, alt + 30, larg, alt);
-    ctx.fillRect(-larg / 2, alt + 30, larg, alt);
-    
+
+
+
+
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillRect(-larg / 2, -alt / 2, larg + 5, alt);
+    ctx.fillRect(larg * 4.5, alt - 15, larg + 5, alt);
+    ctx.fillRect(larg * 4.5, alt + 30, larg + 5, alt);
+    ctx.fillRect(-larg / 2, alt + 30, larg + 5, alt);
+
+
+    //corpo do carro
+    ctx.fillStyle = "rgb(0, 120, 255)";
+    ctx.fillRect(-10, 0, 80, 44);
+
+    ctx.fillStyle = "rgb(0, 0 ,0 )";
+    ctx.fillRect(40, 10, 13, 25);
+
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillRect(23, 30, 30, 7);
+
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillRect(23, 8, 30, 7);
+
+    //farol
+
+    ctx.fillStyle = "rgb(255, 255," + blue + ") ";
+    ctx.fillRect(60, 8, 6, 7);
+
+    ctx.fillStyle = "rgb(255, 255," + blue + ") ";
+    ctx.fillRect(60, 30, 6, 7);
+
+    //Aerofólio
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillRect(-23, 8, 30, 7);
+
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillRect(-23, 30, 30, 7);
+
+    ctx.fillStyle = "rgb(0, 0, 0)";
+    ctx.fillRect(-28, -7, 10, 60);
+
     ctx.restore(); //Restaura o backup do CTX
     requestAnimationFrame(desenhar);
 }
@@ -137,6 +158,8 @@ var movementDrift = 0
 
 document.onkeydown = function (evt) {
     audio.play();
+    audio.volume = 0.03;
+
     switch (evt.keyCode) {
         case 39: //direita
             turnRight = 39;
@@ -154,11 +177,22 @@ document.onkeydown = function (evt) {
             movementDrift = 32;
             audio2.play();
             break;
+        case 76:
+            if (luz == 0) {
+                luz = 1;
+                blue = "0";
+            } else {
+                luz = 0;
+                blue = "255";
+            }
+            break;
     }
 };
+
+
 var intervalo = setInterval(() => {
-    if (Math.abs(ang) == 19.83999999999993){
-       // ang = 0;      
+    if (Math.abs(ang) == 19.83999999999993) {
+        // ang = 0;      
     }
     if (movement == 38) {
         x += 3 * Math.cos(ang / Math.PI);
@@ -169,7 +203,7 @@ var intervalo = setInterval(() => {
         y -= 2 * Math.sin(ang / Math.PI);
     }
     if (movementDrift == 0 && drift > 0) {
-        drift -= 0.02 
+        drift -= 0.02
     }
     if (movementDrift == 32 && drift < 1.0) {
         drift += 0.02
