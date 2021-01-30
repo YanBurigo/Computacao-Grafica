@@ -162,7 +162,6 @@ var movementDrift = 0
 
 document.onkeydown = function (evt) {
     audio.play();
-    audio.volume = 0.03;
 
     switch (evt.keyCode) {
         case 39: //direita
